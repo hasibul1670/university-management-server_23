@@ -5,10 +5,12 @@ import morgan from 'morgan';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import routes from './app/routes';
 import {  generateFacultyId } from './app/modules/users/user.util';
+import cookieParser from 'cookie-parser';
 const app: Application = express();
 
 app.use(cors());
 app.use(morgan('dev'));
+app.use(cookieParser())
 
 //parser
 app.use(express.json());
@@ -20,7 +22,6 @@ app.get('/', async (req, res) => {
   res.send('Welcome to my application');
   await generateFacultyId()
  
-  
 });
 
 app.use(globalErrorHandler);

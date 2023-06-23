@@ -23,7 +23,7 @@ const getAllFaculties = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, studentFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
 
-  const result = await FacultyService.getAllStudents(
+  const result = await FacultyService.getAllFaculties(
     filters,
     paginationOptions
   );
@@ -32,9 +32,9 @@ const getAllFaculties = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getSingleFaculty = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = req.params.id;//id
 
-  const result = await FacultyService.getSingleStudent(id);
+  const result = await FacultyService.getSingleFaculty(id);
 
   sendFacultyResponse(res, 'Faculty retrieved successfully !', result);
 });
@@ -43,7 +43,7 @@ const updateFaculty = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const updatedData = req.body;
 
-  const result = await FacultyService.updateStudent(id, updatedData);
+  const result = await FacultyService.updateFaculty(id, updatedData);
 
   sendFacultyResponse(res, 'Faculty Update successfully !', result);
 });

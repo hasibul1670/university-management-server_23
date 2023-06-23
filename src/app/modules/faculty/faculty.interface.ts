@@ -12,7 +12,7 @@ export type UserName = {
 
 export type IFaculty = {
   id: string;
-  name: UserName; //embedded object
+  name: UserName; //embedded object//karim
   gender: 'male' | 'female';
   dateOfBirth: string;
   email: string;
