@@ -24,6 +24,9 @@ const UserSchema = new Schema<IUser, UserModel>(
       type: Boolean,
       default: true,
     },
+    passwordChangeAt: {
+      type:Date,
+    },
     student: {
       type: Schema.Types.ObjectId,
       ref: 'Student',
@@ -51,6 +54,7 @@ UserSchema.statics.isUserExist =async function (id: string): Promise<Pick<IUser,
     { id: 1, password: 1, role: 1, needsPasswordChange: 1 }
   );
 };
+
 
 UserSchema.statics.isPasswordMatched = async function (
   givenPassword: string,

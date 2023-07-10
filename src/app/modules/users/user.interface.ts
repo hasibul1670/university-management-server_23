@@ -8,12 +8,12 @@ export type IUser = {
   id: string;
   role: string;
   password: string;
+  passwordChangeAt?: Date;
   needsPasswordChange: true | false;
   student?: Types.ObjectId | IStudent;
   faculty?: Types.ObjectId | IFaculty;
   admin?: Types.ObjectId | IAdmin;
 };
-
 
 export type UserModel = {
   isUserExist(

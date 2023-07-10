@@ -1,10 +1,13 @@
+import bcrypt from 'bcrypt';
 import { StatusCodes } from 'http-status-codes';
-import { Secret } from 'jsonwebtoken';
+import { JwtPayload, Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import ApiError from '../../../handlingError/ApiError';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import { User } from '../users/user.model';
+
 import {
+  IChangePassword,
   ILoginUser,
   ILoginUserResponse,
   IRefreshTokenResponse,
@@ -26,8 +29,6 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Password is incorrect');
   }
 
-  //create access token & refresh token
-
   const { id: userId, role, needsPasswordChange } = isUserExist;
   const accessToken = jwtHelpers.createToken(
     { userId, role },
@@ -46,6 +47,42 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
     refreshToken,
     needsPasswordChange,
   };
+};
+
+const changePassword = async (
+  user: JwtPayload | null,
+  payload: IChangePassword
+): Promise<void> => {
+  const { oldPassword, newPassword } = payload;
+
+  const isUserExist = await User.isUserExist(user?.userId);
+
+  if (!isUserExist) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'User does not exist');
+  }
+  //checking OLD password
+  if (
+    isUserExist.password &&
+    !(await User.isPasswordMatched(oldPassword, isUserExist.password))
+  ) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, 'Old Password is incorrect');
+  }
+
+  //hash password
+
+  const newHashPass = await bcrypt.hash(
+    newPassword,
+    Number(config.bycrypt_salt_rounds as string)
+  );
+
+  const updatedData = {
+    password: newHashPass,
+    needsPasswordChange: false,
+    passwordChangeAt: new Date(),
+  };
+  const query = { id: user?.userId };
+  //update in DB
+  await User.findOneAndUpdate(query, updatedData);
 };
 
 const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
@@ -83,4 +120,5 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 export const AuthService = {
   loginUser,
   refreshToken,
+  changePassword,
 };
