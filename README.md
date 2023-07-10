@@ -42,10 +42,6 @@
 - Authentication: JWT
 - Packages Used: bcrypt,http-errors,http-status-codes,zod and more.....
 
-- Email: hasibulislam1670@gmail.com
-- Website:
-- GitHub: https://github.com/hasibul1670
-
 ### Live Link(vercel): https://university-management-server.vercel.app/
 
 ### Application Routes:
@@ -95,3 +91,8 @@
 - https://university-management-server.vercel.app/api/v1/auth/login [POST]
 - https://university-management-server.vercel.app/api/v1/auth/change-password [POST]
 - https://university-management-server.vercel.app/api/v1/auth/refresh-token [POST]
+
+#### Email: hasibulislam1670@gmail.com
+#### Website:https://university-management-server.vercel.app/
+
+#### GitHub: https://github.com/hasibul1670
